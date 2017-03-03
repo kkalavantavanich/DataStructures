@@ -10,6 +10,38 @@ protected:
     size_t mSize;
     Comp mLess;
 
+    // for checking cth element
+    void fixUp(size_t c) {
+        T tmp = mData[c];
+        while(c > 0) {
+            size_t p  = c / 2;
+            if(mLess(tmp, mData[p])) break;
+            mData[c] = mData[p];
+            c = p;
+        }
+        mData[c] = tmp;
+    }
+
+    void fixDown(size_t p) {
+        T tmp = mData[p];
+        size_t c;
+        while((c = 2 * p + 1) < mSize){
+            if (c+1 < mSize && mLess(mData[c], mData[c+1])) c++;
+            if (mLess(mData[c], tmp)) break;
+            mData[p] = mData[c];
+            p = c;
+        }
+        mData[p] = tmp;
+    }
+
+    void expand(size_t capacity) {
+        T *arr = new T[capacity]();
+        for (size_t i = 0; i < mSize; i++) arr[i] = mData[i];
+        delete[] mData;
+        mData = arr;
+        mCap = capacity;
+    }
+
 public:
     priority_queue(const Comp &c = Comp()) {
         mCap = 1;
@@ -36,17 +68,21 @@ public:
     size_t size() const { return mSize; }
     // ACCESS //
     const T& top() const {
-
+        return mData[0];
     }
     // MODIFIERS //
     void push(const T &e){
-
+        if (mSize+1 > mCap) expand(mCap * 2);
+        mData[mSize] = element;
+        mSize++;
+        fixUp(mSize - 1);
     }
 
     void pop() {
-
+        mData[0] = mData[mSize-1];
+        mSize--;
+        fixDown(0);
     }
-
 };
 
 #endif //PQUEUE_H
