@@ -13,16 +13,16 @@ protected:
     // for checking cth element
     void fixUp(size_t c) {
         T tmp = mData[c];
-        while(c > 0) {
+        while (c > 0) {
             size_t p  = c / 2;
-            if(mLess(tmp, mData[p])) break;
+            if (mLess(tmp, mData[p])) break;
             mData[c] = mData[p];
             c = p;
         }
         mData[c] = tmp;
     }
 
-    void fixDown(size_t p) {
+    void fixDown (size_t p) {
         T tmp = mData[p];
         size_t c;
         while((c = 2 * p + 1) < mSize){
@@ -34,7 +34,7 @@ protected:
         mData[p] = tmp;
     }
 
-    void expand(size_t capacity) {
+    void expand (size_t capacity) {
         T *arr = new T[capacity]();
         for (size_t i = 0; i < mSize; i++) arr[i] = mData[i];
         delete[] mData;
@@ -43,7 +43,7 @@ protected:
     }
 
 public:
-    priority_queue(const Comp &c = Comp()) {
+    priority_queue (const Comp &c = Comp()) {
         mCap = 1;
         mData = new T[mCap]();
         mSize = 0;
@@ -73,7 +73,7 @@ public:
     // MODIFIERS //
     void push(const T &e){
         if (mSize+1 > mCap) expand(mCap * 2);
-        mData[mSize] = element;
+        mData[mSize] = e;
         mSize++;
         fixUp(mSize - 1);
     }
