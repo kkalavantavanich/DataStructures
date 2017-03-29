@@ -83,6 +83,16 @@ public:
         mSize--;
         fixDown(0);
     }
+    
+    // OTHERS //
+    friend std::ostream& operator<< (std::ostream &os, const priority_queue pq){
+        os << "priority_queue[";
+        for (size_t i = 0; i < mSize; i++) {
+            os << mData[i] << " ";
+        }
+        os << "]";
+        return os;
+    }
 };
 
 #endif //PQUEUE_H
